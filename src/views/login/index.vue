@@ -74,9 +74,12 @@ export default {
       //   this.$refs.xxx 获取ref属性值为xxx的dom元素
     //   this.$refs.formObj 获取el-form
     // validate()方法内是一个回调函数   回调函数出入两个参数（校验是否成功，未通过校验的字段>对象）
-      this.$refs.formObj.validate(function (isOk) {
+      this.$refs.formObj.validate((isOk) => {
         if (isOk) {
           //   校验通过，继续下一步 调接口 登录
+          this.$axios.post('/authorizations', this.loginForm).then(res => {
+            localStorage.setItem('login-token', res.data.data.token)
+          })
         }
       })
     }
