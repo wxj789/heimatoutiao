@@ -30,18 +30,23 @@
       </el-aside>
       <!-- 右侧 -->
       <el-container>
-        <el-header>头部</el-header>
-        <el-main>主内容</el-main>
+        <el-header>
+          <header-a></header-a>
+        </el-header>
+        <el-main>
+          <router-view></router-view>
+        </el-main>
       </el-container>
     </el-container>
   </div>
 </template>
 
 <script>
-
+import headerA from '../../components/header.vue'
 export default {
   name: 'home',
   components: {
+    'header-a': headerA
   }
 }
 </script>
