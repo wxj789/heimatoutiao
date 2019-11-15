@@ -54,21 +54,26 @@ export default {
 </script>
 
 <style lang="less" scoped>
+  .header {
+    background-color: #fff;
+    height: 50px;
     .left {
-        span {
+      span {
         margin-left: 5px;
         vertical-align: top;
-        }
+      }
     }
     .right {
-        img {
-            width: 40px;
-            border-radius: 50%;
-            vertical-align: middle;
-            margin-right: 8px;
-        }
-        .el-dropdown {
-            cursor: pointer;
-        }
+      img {
+        width: 40px;
+        border-radius: 50%;
+        vertical-align: middle;
+        margin-right: 8px;
+      }
+      .el-dropdown {
+        cursor: pointer;
+      }
     }
+  }
+
 </style>

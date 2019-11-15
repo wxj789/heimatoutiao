@@ -36,11 +36,11 @@
         </el-menu>
       </el-aside>
       <!-- 右侧 -->
-      <el-container>
-        <el-header>
+      <el-container style="background-color:#eee">
+        <el-header style="padding:0">
           <header-a></header-a>
         </el-header>
-        <el-main>
+        <el-main style="padding:0 10px">
           <router-view></router-view>
         </el-main>
       </el-container>
