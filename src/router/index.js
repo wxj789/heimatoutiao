@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import NProgress from 'nprogress'
 // import Home from '../views/home/index.vue' // 完整路径
 import layout from '../views/layout' // 简写路径
 import login from '../views/login' // 简写路径
@@ -56,6 +57,35 @@ const routes = [
 
 const router = new VueRouter({
   routes
+})
+
+// 路由的拦截器 beforeEach 方法，该方法接收一个回调函数
+// to 表示去哪里的路由信息
+// from 表示来自哪里的路由信息
+// next 是一个方法，用于路由放行
+// 我们要做的就是：判断用户的登录状态，有就通过，没有就跳转到登录页面
+router.beforeEach((to, from, next) => {
+  // 开启顶部导航进度条
+  NProgress.start()
+  // 访问登录页面
+  if (to.path === '/login') {
+    return next()
+  }
+  // 访问非登录页面
+  // 获取token
+  const token = window.localStorage.getItem('login-token')
+  // 判断是否有token
+  if (token) {
+    next()
+  } else {
+    next('/login')
+  }
+})
+
+// 路由导航结束之后触发的钩子函数
+router.afterEach((to, from) => {
+  // 导航结束之后关闭进度条
+  NProgress.done()
 })
 
 export default router

@@ -4,6 +4,7 @@ import router from './router'
 import ElementUI from 'element-ui' // 引入组件
 import 'element-ui/lib/theme-chalk/index.css' // 引入样式
 import './styles/index.less'
+import 'nprogress/nprogress.css' // 加载nprogress 中的指定样式文件
 import axios from 'axios'
 Vue.use(ElementUI) // 注册全局组件
 Vue.prototype.$axios = axios // axios赋值给全局属性

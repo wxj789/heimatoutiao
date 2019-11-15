@@ -79,7 +79,7 @@ export default {
           //   校验通过，继续下一步 调接口 登录
           this.$axios.post('/authorizations', this.loginForm).then(res => {
             localStorage.setItem('login-token', res.data.data.token)
-            this.$router.push('/home')
+            this.$router.push('/')
           }).catch(() => {
             this.$message({
               message: '请填写正确的信息',
