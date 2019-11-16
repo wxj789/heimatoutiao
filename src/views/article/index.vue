@@ -37,11 +37,18 @@
               type="daterange"
               range-separator="-"
               start-placeholder="开始日期"
-              end-placeholder="结束日期">
+              end-placeholder="结束日期"
+              value-format="yyyy-MM-dd">
+              <!-- value-format：指定输入框日期的格式 -->
             </el-date-picker>
           </el-form-item>
           <el-form-item>
-            <el-button style="margin-left:80px" type="primary" round @click="loadArticle(1)">查询</el-button>
+            <el-button
+              style="margin-left:80px"
+              type="primary"
+              round
+              @click="loadArticle(1)"
+              >查询</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -117,9 +124,9 @@ export default {
         status: null,
         channel_id: null
         // begin_pubdate: '',
-        // end_pubate: ''
+        // end_pubdate: ''
       },
-      rangeDater: '',
+      rangeDater: [], // 开始和结束时间
       tableData: [
         {
           img: '',
@@ -164,10 +171,15 @@ export default {
           Authorization: `Bearer ${token}`
         },
         params: {
+          // 增加文章状态
           status: this.formData.status,
           page,
           pre_page: 10,
-          channel_id: this.formData.channel_id
+          // 增加频道id
+          channel_id: this.formData.channel_id,
+          // 增加起止时间
+          begin_pubdate: this.rangeDater ? this.rangeDater[0] : null, // 开始时间
+          end_pubdate: this.rangeDater ? this.rangeDater[1] : null // 结束时间
         }
       }).then(res => {
         // console.log(res.data)
