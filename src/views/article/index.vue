@@ -147,7 +147,8 @@ export default {
         { type: 'info', label: '已删除' }
       ],
       loading: true, // 表格的load状态
-      channels: [] // 频道数据
+      channels: [], // 频道数据
+      page: 1
     }
   },
   created () {
@@ -209,6 +210,7 @@ export default {
     onPageChange (page) {
       // console.log(page)
       this.loadArticle(page)
+      this.page = page
     },
     // 删除文章
     onDelete (id) {
@@ -219,8 +221,9 @@ export default {
           Authorization: `Bearer ${window.localStorage.getItem('login-token')}`
         }
       }).then(res => {
-        console.log(res.data)
-        this.loadArticle(1)
+        // console.log(res.data)
+        // 删除成功，重新加载当前页的文章列表
+        this.loadArticle(this.page)
       })
     }
   }
