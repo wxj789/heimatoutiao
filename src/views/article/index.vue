@@ -19,6 +19,8 @@
           </el-form-item>
           <el-form-item label="频道列表：" >
             <el-select v-model="formData.channel_id" placeholder="请选择">
+              <!-- 单独添加一个所有频道的标签 -->
+              <el-option label="所有频道" :value="null"></el-option>
               <!-- 渲染频道列表 -->
               <el-option
                 v-for="channel in channels"
@@ -113,7 +115,7 @@ export default {
     return {
       formData: {
         status: null,
-        channel_id: ''
+        channel_id: null
         // begin_pubdate: '',
         // end_pubate: ''
       },
@@ -164,7 +166,8 @@ export default {
         params: {
           status: this.formData.status,
           page,
-          pre_page: 10
+          pre_page: 10,
+          channel_id: this.formData.channel_id
         }
       }).then(res => {
         // console.log(res.data)
