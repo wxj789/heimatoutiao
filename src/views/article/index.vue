@@ -92,8 +92,10 @@
           <el-table-column prop="pubdate" label="日期">
           </el-table-column>
           <el-table-column label="操作">
+            <template  slot-scope="scope">
             <el-link icon="el-icon-edit" :underline="false">编辑</el-link>&nbsp;
-            <el-link icon="el-icon-delete" :underline="false">查看</el-link>
+            <el-link icon="el-icon-delete" :underline="false" @click="onDelete(scope.row.id)">删除</el-link>
+            </template>
           </el-table-column>
         </el-table>
       </div>
@@ -207,10 +209,20 @@ export default {
     onPageChange (page) {
       // console.log(page)
       this.loadArticle(page)
+    },
+    // 删除文章
+    onDelete (id) {
+      this.$axios({
+        method: 'DELETE',
+        url: `/articles/${id}`,
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem('login-token')}`
+        }
+      }).then(res => {
+        console.log(res.data)
+        this.loadArticle(1)
+      })
     }
-    // onSubmit () {
-    //   this.loadArticle()
-    // }
   }
 
 }

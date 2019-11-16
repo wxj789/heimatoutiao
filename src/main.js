@@ -6,12 +6,29 @@ import 'element-ui/lib/theme-chalk/index.css' // 引入样式
 import './styles/index.less'
 import 'nprogress/nprogress.css' // 加载nprogress 中的指定样式文件
 import axios from 'axios'
+import JSONbig from 'json-bigint'
 Vue.use(ElementUI) // 注册全局组件
 Vue.prototype.$axios = axios // axios赋值给全局属性
 axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0' // 设置为常态地址
 
 Vue.config.productionTip = false
 
+// axios 默认会把后端返回的数据使用JSON.parse 转为对象给我们使用
+// 同时 axios 也提供了让我们自定义转换的功能
+// axios 在收到相应数据之后都会经过这里 进行数据转换
+axios.defaults.transformResponse = [function (data, headers) {
+  // 删除操作执行后，后端返回的是空数据
+  // 空数据一经转换就报错
+  // 当没有响应体的时候。JSONbig.parse(data)执行就会报错
+
+  // 使用try-catch 捕获异常
+  // 导致报错的代码放到 try 里面， 出错之后的处理放到 catch 里面
+  try {
+    return JSONbig.parse(data)
+  } catch (error) {
+    return {}
+  }
+}]
 new Vue({
   router,
   render: h => h(App)
