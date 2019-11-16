@@ -1,9 +1,48 @@
 <template>
-  <div class="publish">发布文章</div>
+  <div class="publish">
+    <el-card class="box-card">
+      <div slot="header" class="clearfix">
+        <span>发表文章</span>
+      </div>
+      <el-form ref="form" :model="article" label-width="80px">
+        <el-form-item label="标题：">
+          <el-input placeholder="文章名称" v-model="article.name" style="width:400px"></el-input>
+        </el-form-item>
+        <el-form-item label="内容：">
+          <el-input v-model="article.content"></el-input>
+        </el-form-item>
+        <el-form-item label="频道：">
+          <el-select v-model="article.region" placeholder="请选择">
+            <el-option label="区域一" value="shanghai"></el-option>
+            <el-option label="区域二" value="beijing"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onSubmit">立即创建</el-button>
+          <el-button>取消</el-button>
+        </el-form-item>
+      </el-form>
+    </el-card>
+  </div>
 </template>
 
 <script>
 export default {
+  name: 'publish_article',
+  data () {
+    return {
+      article: {
+        name: '',
+        content: '',
+        region: ''
+      }
+    }
+  },
+  methods: {
+    onSubmit () {
+      console.log('submit!')
+    }
+  }
 
 }
 </script>
