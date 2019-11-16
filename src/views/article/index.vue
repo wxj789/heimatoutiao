@@ -43,7 +43,12 @@
         <!-- el-table 表格组件
             data 表格的数组，要求是数组
             表格组件会使用 data 的数据 在内部自己进行遍历，不需要我们再写 v-for -->
-        <el-table :data="articles" style="width: 100%">
+        <el-table
+          v-loading="loading"
+          element-loading-text="拼命加载中"
+          element-loading-spinner="el-icon-loading"
+          element-loading-background="rgba(0, 0, 0, 0.8)"
+          :data="articles" style="width: 100%">
           <!-- el-table-column 表格列组件
               prop 属性 用来指定渲染哪个数据字段
               label 属性 表头的名称
@@ -81,6 +86,7 @@
         layout="prev, pager, next"
         :total="num"
         @current-change="onPageChange"
+        :disabled="loading"
         >
         <!-- :disabled="loading"  表格加载时，是否禁止分页的禁用 -->
       </el-pagination>
@@ -151,6 +157,8 @@ export default {
         this.num = res.data.data.total_count
       }).catch(err => {
         console.log(err, '失败')
+      }).finally(() => {
+        this.loading = false
       })
     },
     onPageChange (page) {
