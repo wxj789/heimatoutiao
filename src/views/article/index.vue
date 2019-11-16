@@ -14,13 +14,19 @@
               <el-radio label="1">待审核</el-radio>
               <el-radio label="2">审核通过</el-radio>
               <el-radio label="3">审核失败</el-radio>
-              <el-radio label="4">已删除</el-radio>
+              <!-- <el-radio label="4">已删除</el-radio> -->
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="频道列表：">
+          <el-form-item label="频道列表：" >
             <el-select v-model="formData.channel_id" placeholder="请选择">
-              <el-option label="c++" value="c++"></el-option>
-              <el-option label="ios" value="ios"></el-option>
+              <!-- 渲染频道列表 -->
+              <el-option
+                v-for="channel in channels"
+                :key="channel.id"
+                :label="channel.name"
+                :value="channel.id"
+                ></el-option>
+              <!-- <el-option label="ios" value="ios"></el-option> -->
             </el-select>
           </el-form-item>
           <el-form-item label="时间选择：">
@@ -102,7 +108,7 @@
 
 <script>
 export default {
-  // name: 'article',
+  name: 'article-list',
   data () {
     return {
       formData: {
@@ -129,15 +135,19 @@ export default {
         { type: 'warning', label: '审核失败' },
         { type: 'info', label: '已删除' }
       ],
-      loading: true // 表格的load状态
+      loading: true, // 表格的load状态
+      channels: [] // 频道数据
     }
   },
   created () {
+    // 加载文章列表
     this.loadArticle(1)
+    // 加载频道列表
+    this.loadChannels()
   },
   methods: {
     loadArticle (page = 1) {
-      // 加载loading
+      // 加载文章列表loading
       this.loading = true
       const token = window.localStorage.getItem('login-token')
       this.$axios({
@@ -157,7 +167,7 @@ export default {
           pre_page: 10
         }
       }).then(res => {
-        console.log(res.data)
+        // console.log(res.data)
         this.articles = res.data.data.results
         this.num = res.data.data.total_count
       }).catch(err => {
@@ -166,6 +176,19 @@ export default {
         this.loading = false
       })
     },
+
+    // 获取文章频道
+    loadChannels () {
+      this.$axios({
+        method: 'GET',
+        url: '/channels'
+      }).then(res => {
+        // console.log(res.data)
+
+        this.channels = res.data.data.channels
+      })
+    },
+    // 根据页数显示不同的文字列表
     onPageChange (page) {
       // console.log(page)
       this.loadArticle(page)
