@@ -37,7 +37,7 @@
     <!-- 内容 -->
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-      <span>共找到{{num}}条符合条件的内容</span>
+      <span>共找到{{ num }}条符合条件的内容</span>
       </div>
       <div>
         <!-- el-table 表格组件
@@ -74,20 +74,32 @@
         </el-table>
       </div>
 
+      <!-- 分页 -->
+      <el-pagination
+        style="margin-top:20px;margin-left:360px"
+        background
+        layout="prev, pager, next"
+        :total="num"
+        @current-change="onPageChange"
+        >
+        <!-- :disabled="loading"  表格加载时，是否禁止分页的禁用 -->
+      </el-pagination>
+
     </el-card>
+
   </div>
 </template>
 
 <script>
 export default {
-  name: 'article',
+  // name: 'article',
   data () {
     return {
       formData: {
         status: [],
-        channel_id: '',
-        startDate: '',
-        endDate: ''
+        channel_id: ''
+        // begin_pubdate: '',
+        // end_pubate: ''
       },
       rangeDater: '',
       tableData: [
@@ -99,21 +111,24 @@ export default {
         }
       ],
       articles: [],
-      num: '',
+      num: 0,
       items: [
         { type: 'danger', label: '草稿' },
         { type: '', label: '待审核' },
         { type: 'success', label: '已发表' },
         { type: 'warning', label: '审核失败' },
         { type: 'info', label: '已删除' }
-      ]
+      ],
+      loading: true // 表格的load状态
     }
   },
   created () {
-    this.loadArticle()
+    this.loadArticle(1)
   },
   methods: {
-    loadArticle () {
+    loadArticle (page = 1) {
+      // 加载loading
+      this.loading = true
       const token = window.localStorage.getItem('login-token')
       this.$axios({
         method: 'GET',
@@ -125,12 +140,22 @@ export default {
           // 注意：token的格式要求：Bearer token
           // Bearer 后有一个空格隔开
           Authorization: `Bearer ${token}`
+        },
+        params: {
+          page,
+          pre_page: 10
         }
       }).then(res => {
         console.log(res.data)
         this.articles = res.data.data.results
         this.num = res.data.data.total_count
+      }).catch(err => {
+        console.log(err, '失败')
       })
+    },
+    onPageChange (page) {
+      // console.log(page)
+      this.loadArticle(page)
     }
   }
 

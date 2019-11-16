@@ -59,6 +59,8 @@ const router = new VueRouter({
   routes
 })
 
+// 登录状态的校验  ---路由拦截器
+
 // 路由的拦截器 beforeEach 方法，该方法接收一个回调函数
 // to 表示去哪里的路由信息
 // from 表示来自哪里的路由信息
