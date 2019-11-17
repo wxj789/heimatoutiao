@@ -6,20 +6,27 @@
       </div>
       <el-form ref="form" :model="article" label-width="80px">
         <el-form-item label="标题：">
-          <el-input placeholder="文章名称" v-model="article.name" style="width:400px"></el-input>
+          <el-input placeholder="文章名称" v-model="article.title" style="width:400px"></el-input>
         </el-form-item>
         <el-form-item label="内容：">
-          <el-input v-model="article.content"></el-input>
+          <!-- 富文本编辑器 -->
+          <quillEditor
+            style="height:440px"
+            v-model="article.content"
+            ref="myQuillEditor"
+            :options="editorOption"
+          ></quillEditor>
         </el-form-item>
+        <br><br><br>
         <el-form-item label="频道：">
-          <el-select v-model="article.region" placeholder="请选择">
+          <el-select v-model="article.channel_id" placeholder="请选择">
             <el-option label="区域一" value="shanghai"></el-option>
             <el-option label="区域二" value="beijing"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">立即创建</el-button>
-          <el-button>取消</el-button>
+          <el-button type="primary" @click="onSubmit">发表</el-button>
+          <el-button>存入草稿</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -27,15 +34,25 @@
 </template>
 
 <script>
+// 富文本：vue.js-->资源列表-->Awesome Vue
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+
+import { quillEditor } from 'vue-quill-editor'
 export default {
   name: 'publish_article',
+  components: {
+    quillEditor
+  },
   data () {
     return {
       article: {
-        name: '',
+        title: '',
         content: '',
-        region: ''
-      }
+        channel_id: ''
+      },
+      editorOption: {} // 富文本编辑器的配置选项
     }
   },
   methods: {
