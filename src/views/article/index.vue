@@ -161,18 +161,18 @@ export default {
     loadArticle (page = 1) {
       // 加载文章列表loading
       this.loading = true
-      const token = window.localStorage.getItem('login-token')
+      // const token = window.localStorage.getItem('login-token')
       this.$axios({
         method: 'GET',
         url: '/articles',
         // 添加请求头
-        headers: {
-          // 名字：值
-          // 后端要求把 token 放到请求头中，并赋值给 Authorization
-          // 注意：token的格式要求：Bearer token
-          // Bearer 后有一个空格隔开
-          Authorization: `Bearer ${token}`
-        },
+        // headers: {
+        //   // 名字：值
+        //   // 后端要求把 token 放到请求头中，并赋值给 Authorization
+        //   // 注意：token的格式要求：Bearer token
+        //   // Bearer 后有一个空格隔开
+        //   Authorization: `Bearer ${token}`
+        // },
         params: {
           // 增加文章状态
           status: this.formData.status,
@@ -216,10 +216,10 @@ export default {
     onDelete (id) {
       this.$axios({
         method: 'DELETE',
-        url: `/articles/${id}`,
-        headers: {
-          Authorization: `Bearer ${window.localStorage.getItem('login-token')}`
-        }
+        url: `/articles/${id}`
+        // headers: {
+        //   Authorization: `Bearer ${window.localStorage.getItem('login-token')}`
+        // }
       }).then(res => {
         // console.log(res.data)
         // 删除成功，重新加载当前页的文章列表

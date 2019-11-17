@@ -29,6 +29,35 @@ axios.defaults.transformResponse = [function (data, headers) {
     return {}
   }
 }]
+
+// 请求拦截器
+axios.interceptors.request.use(function (config) {
+  // config 是本次请求相关的配置对象 并将其内的相关数据发送给后端
+  // 我们可以在这里统一配置config内的数据
+  // console.log(config)
+  const token = window.localStorage.getItem('login-token')
+  // 统一配置请求头中的 token
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  // return config 是请求通行的规则
+  return config
+}, function (error) {
+  // Do something with request error
+  return Promise.reject(error)
+})
+
+// 响应拦截器
+axios.interceptors.response.use(function (response) {
+  // Any status code that lie within the range of 2xx cause this function to trigger
+  // Do something with response data
+  return response
+}, function (error) {
+  // Any status codes that falls outside the range of 2xx cause this function to trigger
+  // Do something with response error
+  return Promise.reject(error)
+})
+
 new Vue({
   router,
   render: h => h(App)
