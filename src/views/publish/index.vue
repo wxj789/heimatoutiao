@@ -20,9 +20,14 @@
         <br><br><br>
         <el-form-item label="频道：">
           <el-select v-model="article.channel_id" placeholder="请选择">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
-          </el-select>
+              <!-- 渲染频道列表 -->
+              <el-option
+                v-for="channel in channels"
+                :key="channel.id"
+                :label="channel.name"
+                :value="channel.id"
+                ></el-option>
+            </el-select>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">发表</el-button>
@@ -52,12 +57,26 @@ export default {
         content: '',
         channel_id: ''
       },
-      editorOption: {} // 富文本编辑器的配置选项
+      editorOption: {}, // 富文本编辑器的配置选项
+      channels: []
     }
+  },
+  created () {
+    this.loadChannels()
   },
   methods: {
     onSubmit () {
       console.log('submit!')
+    },
+    loadChannels () {
+      this.$axios({
+        method: 'GET',
+        url: '/channels'
+      }).then(res => {
+        // console.log(res.data)
+
+        this.channels = res.data.data.channels
+      })
     }
   }
 
