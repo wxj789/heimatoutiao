@@ -30,8 +30,8 @@
             </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">发表</el-button>
-          <el-button>存入草稿</el-button>
+          <el-button type="primary" @click="onSubmit(false)">发表</el-button>
+          <el-button @click="onSubmit(true)">存入草稿</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -55,6 +55,10 @@ export default {
       article: {
         title: '',
         content: '',
+        cover: {
+          type: 0,
+          images: []
+        },
         channel_id: ''
       },
       editorOption: {}, // 富文本编辑器的配置选项
@@ -65,8 +69,26 @@ export default {
     this.loadChannels()
   },
   methods: {
-    onSubmit () {
-      console.log('submit!')
+    onSubmit (draft) {
+      this.$axios({
+        method: 'POST',
+        url: 'articles',
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem('login-token')}`
+        },
+        params: {
+          draft
+        },
+        data: this.article
+      }).then(res => {
+        // console.log(res.data)
+        this.$message({
+          message: '恭喜你，发布成功',
+          type: 'success'
+        })
+        this.article = {}
+        this.$router.push('/article')
+      })
     },
     loadChannels () {
       this.$axios({
