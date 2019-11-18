@@ -1,6 +1,6 @@
 <template>
   <div class="comment">
-<el-card class="box-card">
+    <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>评论列表</span>
       </div>
@@ -28,7 +28,8 @@
                 <el-switch
                     v-model="scope.row.comment_status"
                     active-color="#13ce66"
-                    inactive-color="#ff4949">
+                    inactive-color="#ff4949"
+                    @change="onStatusChange(scope.row)">
                 </el-switch>
             </template>
           </el-table-column>
@@ -56,7 +57,8 @@ export default {
   name: 'CommentArticle',
   data () {
     return {
-      comments: []
+      comments: [],
+      total_count: 0
     }
   },
   created () {
@@ -73,6 +75,25 @@ export default {
       }).then(res => {
         console.log(res.data)
         this.comments = res.data.data.results
+        this.total_count = res.data.data.total_count
+      })
+    },
+    onStatusChange (data) {
+      this.$axios({
+        method: 'PUT',
+        url: '/comments/status',
+        params: {
+          article_id: data.id.toString()
+        },
+        data: {
+          allow_comment: data.comment_status
+        }
+      }).then(res => {
+        console.log(res.data)
+        this.$message({
+          type: 'success',
+          message: `${data.comment_status ? '开启' : '关闭'}成功`
+        })
       })
     }
   }
