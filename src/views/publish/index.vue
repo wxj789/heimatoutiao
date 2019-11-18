@@ -37,15 +37,16 @@
         </el-form-item>
         <!-- 频道 -->
         <el-form-item label="频道：">
-          <el-select v-model="article.channel_id" placeholder="请选择">
-              <!-- 渲染频道列表 -->
+          <!-- <el-select v-model="article.channel_id" placeholder="请选择">
+              渲染频道列表
               <el-option
                 v-for="channel in channels"
                 :key="channel.id"
                 :label="channel.name"
                 :value="channel.id"
                 ></el-option>
-            </el-select>
+            </el-select> -->
+            <ChannelSelect v-model="article.channel_id"></ChannelSelect>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit(false)">发表</el-button>
@@ -63,10 +64,12 @@ import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 
 import { quillEditor } from 'vue-quill-editor'
+import ChannelSelect from '@/components/channel-select'
 export default {
   name: 'publish_article',
   components: {
-    quillEditor
+    quillEditor,
+    ChannelSelect
   },
   data () {
     return {
@@ -76,15 +79,15 @@ export default {
         cover: {
           type: 0,
           images: []
-        },
-        channel_id: ''
+        }
+        // channel_id: ''
       },
       editorOption: {}, // 富文本编辑器的配置选项
       channels: []
     }
   },
   created () {
-    this.loadChannels()
+    // this.loadChannels()
   },
   methods: {
     onSubmit (draft) {
@@ -107,17 +110,17 @@ export default {
         this.article = {}
         this.$router.push('/article')
       })
-    },
-    loadChannels () {
-      this.$axios({
-        method: 'GET',
-        url: '/channels'
-      }).then(res => {
-        // console.log(res.data)
-
-        this.channels = res.data.data.channels
-      })
     }
+    // loadChannels () {
+    //   this.$axios({
+    //     method: 'GET',
+    //     url: '/channels'
+    //   }).then(res => {
+    //     // console.log(res.data)
+
+    //     this.channels = res.data.data.channels
+    //   })
+    // }
   }
 
 }

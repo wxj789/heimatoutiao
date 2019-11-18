@@ -18,18 +18,19 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item label="频道列表：" >
-            <el-select v-model="formData.channel_id" placeholder="请选择">
+            <!-- <el-select v-model="formData.channel_id" placeholder="请选择"> -->
               <!-- 单独添加一个所有频道的标签 -->
-              <el-option label="所有频道" :value="null"></el-option>
+              <!-- <el-option label="所有频道" :value="null"></el-option> -->
               <!-- 渲染频道列表 -->
-              <el-option
+              <!-- <el-option
                 v-for="channel in channels"
                 :key="channel.id"
                 :label="channel.name"
                 :value="channel.id"
-                ></el-option>
+                ></el-option> -->
               <!-- <el-option label="ios" value="ios"></el-option> -->
-            </el-select>
+            <!-- </el-select> -->
+            <ChannelSelect v-model="formData.channel_id"></ChannelSelect>
           </el-form-item>
           <el-form-item label="时间选择：">
             <el-date-picker
@@ -118,8 +119,12 @@
 </template>
 
 <script>
+import ChannelSelect from '../../components/channel-select'
 export default {
   name: 'article-list',
+  components: {
+    ChannelSelect
+  },
   data () {
     return {
       formData: {
@@ -147,7 +152,7 @@ export default {
         { type: 'info', label: '已删除' }
       ],
       loading: true, // 表格的load状态
-      channels: [], // 频道数据
+      // channels: [], // 频道数据
       page: 1
     }
   },
@@ -155,7 +160,7 @@ export default {
     // 加载文章列表
     this.loadArticle(1)
     // 加载频道列表
-    this.loadChannels()
+    // this.loadChannels()
   },
   methods: {
     loadArticle (page = 1) {
@@ -196,16 +201,16 @@ export default {
     },
 
     // 获取文章频道
-    loadChannels () {
-      this.$axios({
-        method: 'GET',
-        url: '/channels'
-      }).then(res => {
-        // console.log(res.data)
+    // loadChannels () {
+    //   this.$axios({
+    //     method: 'GET',
+    //     url: '/channels'
+    //   }).then(res => {
+    //     // console.log(res.data)
 
-        this.channels = res.data.data.channels
-      })
-    },
+    //     this.channels = res.data.data.channels
+    //   })
+    // },
     // 根据页数显示不同的文字列表
     onPageChange (page) {
       // console.log(page)
