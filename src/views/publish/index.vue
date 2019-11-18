@@ -49,8 +49,8 @@
             <ChannelSelect v-model="article.channel_id"></ChannelSelect>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit(false)">发表</el-button>
-          <el-button @click="onSubmit(true)">存入草稿</el-button>
+          <el-button type="primary" @click="$route.params.id ? onEditArticle(false) : onSubmit(false)">发表</el-button>
+          <el-button @click="$route.params.id ? onEditArticle(false) : onSubmit(true)">存入草稿</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -96,7 +96,7 @@ export default {
     onSubmit (draft) {
       this.$axios({
         method: 'POST',
-        url: 'articles',
+        url: '/articles',
         // headers: {
         //   Authorization: `Bearer ${window.localStorage.getItem('login-token')}`
         // },
@@ -112,6 +112,9 @@ export default {
         })
         this.article = {}
         this.$router.push('/article')
+      }).catch(err => {
+        console.log(err)
+        this.$message.error('发布失败')
       })
     },
     loadArticle () {
@@ -121,6 +124,30 @@ export default {
       }).then(res => {
         // console.log(res.data)
         this.article = res.data.data
+      })
+    },
+    onEditArticle (draft) {
+      this.$axios({
+        method: 'PUT',
+        url: `/articles/${this.$route.params.id}`,
+        // headers: {
+        //   Authorization: `Bearer ${window.localStorage.getItem('login-token')}`
+        // },
+        params: {
+          draft
+        },
+        data: this.article
+      }).then(res => {
+        // console.log(res.data)
+        this.$message({
+          message: '恭喜你，编辑成功',
+          type: 'success'
+        })
+        this.article = {}
+        this.$router.push('/article')
+      }).catch(err => {
+        console.log(err)
+        this.$message.error('发布失败')
       })
     }
     // loadChannels () {
