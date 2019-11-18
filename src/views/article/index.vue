@@ -94,7 +94,7 @@
           </el-table-column>
           <el-table-column label="操作">
             <template  slot-scope="scope">
-            <el-link icon="el-icon-edit" :underline="false">编辑</el-link>&nbsp;
+            <el-link icon="el-icon-edit" :underline="false" @click="$router.push(`/publish/${scope.row.id}`)">编辑</el-link>&nbsp;
             <el-link icon="el-icon-delete" :underline="false" @click="onDelete(scope.row.id)">删除</el-link>
             </template>
           </el-table-column>

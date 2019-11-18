@@ -88,6 +88,9 @@ export default {
   },
   created () {
     // this.loadChannels()
+    if (this.$route.params.id) {
+      this.loadArticle()
+    }
   },
   methods: {
     onSubmit (draft) {
@@ -109,6 +112,15 @@ export default {
         })
         this.article = {}
         this.$router.push('/article')
+      })
+    },
+    loadArticle () {
+      this.$axios({
+        method: 'GET',
+        url: `/articles/${this.$route.params.id}`
+      }).then(res => {
+        // console.log(res.data)
+        this.article = res.data.data
       })
     }
     // loadChannels () {
