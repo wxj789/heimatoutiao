@@ -48,6 +48,15 @@
           </el-table-column>
         </el-table>
       </div>
+      <!-- 分页 -->
+      <div style="margin-top:20px;margin-left:400px">
+        <el-pagination
+            background
+            layout="prev, pager, next"
+            :total="total_count"
+            @current-change="onCurrentPage">
+        </el-pagination>
+      </div>
     </el-card>
   </div>
 </template>
@@ -58,18 +67,20 @@ export default {
   data () {
     return {
       comments: [],
-      total_count: 0
+      total_count: 0,
+      page: 1
     }
   },
   created () {
-    this.loadComment()
+    this.loadComment(1)
   },
   methods: {
-    loadComment () {
+    loadComment (page) {
       this.$axios({
         methos: 'GET',
         url: '/articles',
         params: {
+          page,
           response_type: 'comment'
         }
       }).then(res => {
@@ -78,6 +89,8 @@ export default {
         this.total_count = res.data.data.total_count
       })
     },
+
+    // 修改评论状态
     onStatusChange (data) {
       this.$axios({
         method: 'PUT',
@@ -95,6 +108,11 @@ export default {
           message: `${data.comment_status ? '开启' : '关闭'}成功`
         })
       })
+    },
+    // 跳转对应的页数
+    onCurrentPage (page) {
+      this.page = page
+      this.loadComment(page)
     }
   }
 
