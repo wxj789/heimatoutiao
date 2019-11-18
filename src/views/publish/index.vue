@@ -2,7 +2,7 @@
   <div class="publish">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>发表文章</span>
+        <span>{{ $route.params.id ? '编辑文章' : '发表文章'}}</span>
       </div>
       <el-form ref="form" :model="article" label-width="80px">
         <!-- 标题 -->

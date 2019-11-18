@@ -9,6 +9,7 @@ import login from '../views/login' // 简写路径
 import home from '@/views/home'
 import article from '@/views/article'
 import publish from '@/views/publish'
+import comment from '@/views/comment'
 
 Vue.use(VueRouter)
 
@@ -41,6 +42,10 @@ const routes = [
       {
         path: '/publish/:id',
         component: publish
+      },
+      {
+        path: '/comment',
+        component: comment
       }
     ]
   },
