@@ -24,7 +24,13 @@
             </template> -->
           </el-table-column>
           <el-table-column label="评论状态">
-
+            <template slot-scope="scope">
+                <el-switch
+                    v-model="scope.row.comment_status"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949">
+                </el-switch>
+            </template>
           </el-table-column>
           <el-table-column prop="total_comment_count" label="总评论数">
             <!-- <template slot-scope="scope">
