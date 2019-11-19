@@ -10,6 +10,7 @@ import home from '@/views/home'
 import article from '@/views/article'
 import publish from '@/views/publish'
 import comment from '@/views/comment'
+import commentDetail from '@/views/comment-detail'
 
 Vue.use(VueRouter)
 
@@ -46,6 +47,12 @@ const routes = [
       {
         path: '/comment',
         component: comment
+      },
+      {
+        path: '/comment/:id',
+        component: commentDetail,
+        // 将路由参数映射给组件的 props属性
+        props: true
       }
     ]
   },

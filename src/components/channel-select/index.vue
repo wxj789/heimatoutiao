@@ -20,7 +20,12 @@ export default {
       channels: []
     }
   },
-  props: ['value'],
+  // props: ['value'],
+  props: {
+    value: {
+      type: String
+    }
+  },
   created () {
     this.loadChannels()
   },
