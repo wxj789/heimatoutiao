@@ -7,6 +7,7 @@ import './styles/index.less'
 import 'nprogress/nprogress.css' // 加载nprogress 中的指定样式文件
 import axios from 'axios'
 import JSONbig from 'json-bigint'
+import moment from 'moment'
 Vue.use(ElementUI) // 注册全局组件
 Vue.prototype.$axios = axios // axios赋值给全局属性
 axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0' // 设置为常态地址
@@ -58,6 +59,10 @@ axios.interceptors.response.use(function (response) {
   return Promise.reject(error)
 })
 
+// 注册全局过滤器
+Vue.filter('dateFormat', (value) => {
+  return moment(value).format('YYYY-MM-DD hh:mm:ss')
+})
 new Vue({
   router,
   render: h => h(App)

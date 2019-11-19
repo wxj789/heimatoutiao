@@ -40,6 +40,9 @@
                     </template>
                 </el-table-column>
                 <el-table-column prop="pubdate" label="发布时间">
+                    <template slot-scope="scope">
+                        {{ scope.row.pubdate | dateFormat }}
+                    </template>
                 </el-table-column>
             </el-table>
         </div>
@@ -49,7 +52,7 @@
 </template>
 
 <script>
-import moment from 'moment'
+// import moment from 'moment'
 export default {
   name: 'commentDetail',
   data () {
@@ -69,6 +72,16 @@ export default {
   created () {
     this.loadCommentDetail()
   },
+  // 使用过滤器修改时间格式
+  // 有局部过滤器 和 全局过滤器
+  // 作用：用于一些简单的文本格式化，例如：日期格式化处理
+  // 过滤器中的函数可以直接在模板中使用
+  // {{ 数据 | 过滤器函数名 }}
+  //   filters: {
+  //     dateFormat (value) {
+  //       return moment(value).format('YYYY-MM-DD hh:mm:ss')
+  //     }
+  //   },
   methods: {
     loadCommentDetail () {
       this.$axios({
@@ -86,11 +99,11 @@ export default {
       }).then(res => {
         console.log(res.data)
         const commentDetail = res.data.data.results
-        // 使用moment 修改时间格式
-        // 遍历
-        commentDetail.forEach(function (item) {
-          item.pubdate = moment(item.pubdate).format('YYYY-MM-DD hh:mm:ss')
-        })
+        // // 使用moment 修改时间格式
+        // // 遍历
+        // commentDetail.forEach(function (item) {
+        //   item.pubdate = moment(item.pubdate).format('YYYY-MM-DD hh:mm:ss')
+        // })
         this.commentDetail = commentDetail
       }).catch(err => {
         console.log(err)
