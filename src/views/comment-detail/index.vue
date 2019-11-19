@@ -49,6 +49,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 export default {
   name: 'commentDetail',
   data () {
@@ -84,7 +85,13 @@ export default {
         }
       }).then(res => {
         console.log(res.data)
-        this.commentDetail = res.data.data.results
+        const commentDetail = res.data.data.results
+        // 使用moment 修改时间格式
+        // 遍历
+        commentDetail.forEach(function (item) {
+          item.pubdate = moment(item.pubdate).format('YYYY-MM-DD hh:mm:ss')
+        })
+        this.commentDetail = commentDetail
       }).catch(err => {
         console.log(err)
         this.$message.error('获取失败')
