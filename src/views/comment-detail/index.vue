@@ -22,21 +22,28 @@
                 <el-table-column label="是否点赞">
                     <template slot-scope="scope">
                         <!-- {{ scope.row.is_liking === 1 ? '已赞' : '未赞' }} -->
-                        <el-switch
+                        <!-- <el-switch
                             v-model='scope.row.is_liking'
                             active-color="#13ce66"
                             inactive-color="#ff4949">
-                        </el-switch>
+                        </el-switch> -->
+                        <el-link
+                          icon="el-icon-edit"
+                          @click="onIsLiking(scope.row)"
+                        >
+                        {{ scope.row.is_liking === 1 ? '已赞' : '未赞' }}
+                        </el-link>
                     </template>
                 </el-table-column>
                 <el-table-column prop="is_top" label="是否置顶">
                     <template slot-scope="scope">
-                        {{ scope.row.is_top === 1 ? '已置顶' : '未置顶' }}
-                        <!-- <el-switch
+                        <!-- {{ scope.row.is_top === 1 ? '已置顶' : '未置顶' }} -->
+                        <el-switch
                             v-model='scope.row.is_top'
                             active-color="#13ce66"
-                            inactive-color="#ff4949">
-                        </el-switch> -->
+                            inactive-color="#ff4949"
+                            @change="onTop(scope.row)">
+                        </el-switch>
                     </template>
                 </el-table-column>
                 <el-table-column prop="pubdate" label="发布时间">
@@ -109,6 +116,69 @@ export default {
         console.log(err)
         this.$message.error('获取失败')
       })
+    },
+    onTop (item) {
+      this.$axios({
+        method: 'PUT',
+        url: `/comments/${item.com_id}/sticky`,
+        data: {
+          sticky: item.is_top
+        }
+      }).then(res => {
+        // console.log(res.data)
+        if (res.data.data.sticky) {
+          this.$message({
+            type: 'success',
+            message: '恭喜您，置顶成功'
+          })
+        } else {
+          this.$message({
+            type: 'success',
+            message: '恭喜您，取消置顶成功'
+          })
+        }
+      }).catch(err => {
+        console.log(err)
+        this.$message.error('置顶失败')
+      })
+    },
+    onIsLiking (item) {
+      if (item.is_liking === 1) {
+        this.$axios({
+          method: 'DELETE',
+          url: `/comment/likings/${item.com_id}`
+        }).then(res => {
+          console.log(res.data)
+          item.is_liking = 0
+          this.loadCommentDetail()
+          this.$message({
+            type: 'success',
+            message: '已成功取消点赞'
+          })
+        }).catch(err => {
+          console.log(err)
+          this.$message.error('取消点赞失败')
+        })
+      } else if (item.is_liking === 0) {
+        this.$axios({
+          method: 'POST',
+          url: '/comment/likings',
+          data: {
+            target: item.com_id
+          }
+        }).then(res => {
+          console.log(res.data)
+          item.com_id = 1
+          this.loadCommentDetail()
+          this.$message({
+            type: 'success',
+            message: '成功点赞'
+          })
+        }).catch(err => {
+          console.log(err)
+          this.$message.error('点赞失败')
+        })
+      }
     }
   }
 
