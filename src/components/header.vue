@@ -9,10 +9,10 @@
         <!-- 右侧 -->
         <el-col class="right" :span="3">
             <!-- 头像 -->
-            <img src="../assets/img/20170722125959_3j4BG.jpeg" alt="">
+            <img :src="accountInfo.photo" alt="">
             <!-- 用户信息 -->
             <el-dropdown trigger="click">
-                 <span>嘴角笑意<i class="el-icon-caret-bottom"></i>
+                 <span>{{ accountInfo.name }}<i class="el-icon-caret-bottom"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item >个人信息</el-dropdown-item>
@@ -28,6 +28,14 @@
 
 <script>
 export default {
+  data () {
+    return {
+      accountInfo: {}
+    }
+  },
+  created () {
+    this.loadInfo()
+  },
   methods: {
     onLogout () {
       this.$confirm('确定要退出吗？', '提示', {
@@ -46,6 +54,15 @@ export default {
           type: 'info',
           message: '已取消退出'
         })
+      })
+    },
+    loadInfo () {
+      this.$axios({
+        method: 'GET',
+        url: '/user/profile'
+      }).then(res => {
+        // console.log(res.data)
+        this.accountInfo = res.data.data
       })
     }
   }
@@ -66,6 +83,7 @@ export default {
     .right {
       img {
         width: 40px;
+        height: 40px;
         border-radius: 50%;
         vertical-align: middle;
         margin-right: 8px;
