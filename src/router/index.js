@@ -12,6 +12,7 @@ import publish from '@/views/publish'
 import comment from '@/views/comment'
 import commentDetail from '@/views/comment-detail'
 import source from '@/views/source'
+import account from '@/views/account'
 
 Vue.use(VueRouter)
 
@@ -58,6 +59,10 @@ const routes = [
       {
         path: '/source',
         component: source
+      },
+      {
+        path: '/account',
+        component: account
       }
     ]
   },

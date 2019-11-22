@@ -1,6 +1,6 @@
 <template>
   <div class="source">
-      <el-card class="box-card">
+    <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>图片管理</span>
       </div>
