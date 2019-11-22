@@ -9,7 +9,8 @@
           <el-radio-button label="全部"></el-radio-button>
           <el-radio-button  label="收藏"></el-radio-button>
         </el-radio-group>
-        <el-button style="float:right" type="primary">上传图片</el-button>
+        <el-button style="float:right" type="primary" @click="onUpload">上传图片</el-button>
+        <input type="file" hidden ref="file" @change="onChange">
       </div>
       <div>
         <el-row :gutter="20">
@@ -69,7 +70,7 @@ export default {
           per_page: 12
         }
       }).then(res => {
-        console.log(res.data)
+        // console.log(res.data)
         this.images = res.data.data.results
         this.total_count = res.data.data.total_count
       })
@@ -96,14 +97,14 @@ export default {
         method: 'DELETE',
         url: `/user/images/${item.id}`
       }).then(res => {
-        console.log(res.data)
+        // console.log(res.data)
         this.$message({
           type: 'success',
           message: '删除成功'
         })
         this.loadImage(this.page)
-      }).catch(err => {
-        console.log(err)
+      }).catch(() => {
+        // console.log(err)
         this.$message.error('删除失败')
       })
     },
@@ -119,13 +120,33 @@ export default {
             per_page: 12
           }
         }).then(res => {
-          console.log(res.data)
+          // console.log(res.data)
           this.images = res.data.data.results
           this.total_count = res.data.data.total_count
         })
       } else if (value === '全部') {
         this.loadImage()
       }
+    },
+    // 点击上传
+    onUpload () {
+      this.$refs.file.click()
+    },
+    onChange () {
+      const fileObj = this.$refs.file.files[0]
+      // 获取表单
+      const fd = new FormData()
+      fd.append('image', fileObj)
+      this.$axios({
+        method: 'POST',
+        url: '/user/images',
+        data: fd
+      }).then(res => {
+        // console.log(res.data)
+        this.loadImage(1)
+      }).catch(() => {
+        this.$message.error('图片上传失败')
+      })
     }
   }
 }
