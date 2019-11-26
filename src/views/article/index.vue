@@ -49,7 +49,7 @@
               style="margin-left:80px"
               type="primary"
               round
-              @click="loadArticle(1)"
+              @click="onQuery"
               >查询</el-button>
           </el-form-item>
         </el-form>
@@ -110,6 +110,7 @@
         :total="num"
         @current-change="onPageChange"
         :disabled="loading"
+        :current-page="page"
         >
         <!-- :disabled="loading"  表格加载时，是否禁止分页的禁用 -->
       </el-pagination>
@@ -231,6 +232,11 @@ export default {
         // 删除成功，重新加载当前页的文章列表
         this.loadArticle(this.page)
       })
+    },
+    // 查询
+    onQuery () {
+      this.loadArticle(1)
+      this.page = 1
     }
   }
 
