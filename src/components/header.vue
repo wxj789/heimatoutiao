@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import eventBus from '../views/utils/event-bus'
 export default {
   data () {
     return {
@@ -35,6 +36,11 @@ export default {
   },
   created () {
     this.loadInfo()
+    // 在初始化中监听自定义事件
+    // 订阅
+    eventBus.$on('updata-user', accountInfo => {
+      this.accountInfo = accountInfo
+    })
   },
   methods: {
     onLogout () {
@@ -63,6 +69,8 @@ export default {
       }).then(res => {
         // console.log(res.data)
         this.accountInfo = res.data.data
+      }).catch(() => {
+        this.$message.error('用户信息加载失败！')
       })
     }
   }

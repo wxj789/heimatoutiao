@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import eventBus from '../utils/event-bus'
 export default {
   name: 'AccountInfo',
   data () {
@@ -53,6 +54,7 @@ export default {
         this.accountInfo = res.data.data
       })
     },
+    // 修改用户信息
     onConfirm () {
       this.$axios({
         method: 'PATCH',
@@ -60,11 +62,21 @@ export default {
         data: this.accountInfo
       }).then(res => {
         // console.log(res.data)
+        // 在用户信息修改成功之后
+        // 通知
+        eventBus.$emit('updata-user', this.accountInfo)
+        this.$message({
+          type: 'success',
+          message: '用户信息修改成功'
+        })
+      }).catch(() => {
+        this.$message.error('用户信息修改失败')
       })
     },
     onLoadImage () {
       this.$refs.image.click()
     },
+    // 修改用户头像
     onSelectImage () {
       const file = this.$refs.image.files[0]
       const fd = new FormData()
@@ -76,6 +88,16 @@ export default {
       }).then(res => {
         // console.log(res.data)
         this.loadInfo()
+        this.accountInfo.photo = res.data.data.photo
+        // 在用户头像修改成功之后
+        // 通知
+        eventBus.$emit('updata-user', this.accountInfo)
+        this.$message({
+          type: 'success',
+          message: '头像修改成功'
+        })
+      }).catch(() => {
+        this.$message.error('头像修改失败')
       })
     }
   }

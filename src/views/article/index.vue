@@ -231,6 +231,12 @@ export default {
         // console.log(res.data)
         // 删除成功，重新加载当前页的文章列表
         this.loadArticle(this.page)
+        this.$message({
+          type: 'success',
+          message: '文章删除成功'
+        })
+      }).catch(() => {
+        this.$message.error('删除文章失败')
       })
     },
     // 查询
