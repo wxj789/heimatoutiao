@@ -102,7 +102,7 @@ export default {
           type: 'success',
           message: '删除成功'
         })
-        this.loadImage(this.page)
+        // this.loadImage(this.page)
       }).catch(() => {
         // console.log(err)
         this.$message.error('删除失败')

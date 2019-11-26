@@ -1,7 +1,10 @@
 <template>
   <div>
     <el-select placeholder="请选择" :value="value" @input="$emit('input', $event)">
-      <el-option label="所有频道" :value="null"></el-option>
+      <el-option
+        v-if="incloudAll"
+        label="所有频道"
+        :value="null"></el-option>
       <el-option
         v-for="channel in channels"
         :key="channel.id"
@@ -23,7 +26,12 @@ export default {
   // props: ['value'],
   props: {
     value: {
-      type: String
+      type: [String, Number],
+      require: true
+    },
+    incloudAll: {
+      type: Boolean,
+      default: true
     }
   },
   created () {

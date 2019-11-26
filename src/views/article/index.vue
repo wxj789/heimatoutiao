@@ -30,7 +30,8 @@
                 ></el-option> -->
               <!-- <el-option label="ios" value="ios"></el-option> -->
             <!-- </el-select> -->
-            <ChannelSelect v-model="formData.channel_id"></ChannelSelect>
+            <ChannelSelect
+              v-model="formData.channel_id"></ChannelSelect>
           </el-form-item>
           <el-form-item label="时间选择：">
             <el-date-picker
@@ -128,8 +129,8 @@ export default {
   data () {
     return {
       formData: {
-        status: null,
-        channel_id: null
+        status: null
+        // channel_id: null
         // begin_pubdate: '',
         // end_pubdate: ''
       },

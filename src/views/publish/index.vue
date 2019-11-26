@@ -46,7 +46,9 @@
                 :value="channel.id"
                 ></el-option>
             </el-select> -->
-            <ChannelSelect v-model="article.channel_id"></ChannelSelect>
+            <ChannelSelect
+              v-model="article.channel_id"
+              :incloud-all="false"></ChannelSelect>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="$route.params.id ? onEditArticle(false) : onSubmit(false)">发表</el-button>
